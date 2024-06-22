@@ -11,8 +11,8 @@ import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var trueButton: Button
-    private lateinit var falseButton: Button
+    private var currentIndex: Int =0;
+
     private val questionBank = listOf(
         Question(R.string.question_australia, true),
         Question(R.string.question_oceans, true),
@@ -26,32 +26,54 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         // Like the R class, View Binding generates code within your package structure,
         binding = ActivityMainBinding.inflate(layoutInflater)
-        trueButton = findViewById(R.id.true_button)
-        trueButton.setOnClickListener { view: View ->
+        setContentView(binding.root)
+        // this is a part of the challenge.
+        binding.questionTextView.setOnClickListener {
+            currentIndex = (currentIndex + 1 ) % questionBank.size
+            updateQuestion()
+        }
+        binding.trueButton.setOnClickListener { view: View ->
+            checkAnswer(true)
+        }
+
+        binding.falseButton.setOnClickListener { view: View ->
+             checkAnswer(false)
+        }
+
+        binding.nextButton.setOnClickListener {
+            currentIndex = (currentIndex + 1) % questionBank.size
+            updateQuestion()
+        }
+
+        binding.previousButton.setOnClickListener {
+            currentIndex = (currentIndex - 1) % questionBank.size
+            updateQuestion()
+        }
+
+        updateQuestion()
+
+
+
+    }
+
+    private fun updateQuestion(){
+        val questionTextResId = questionBank[currentIndex].textResId
+        binding.questionTextView.setText(questionTextResId)
+    }
+
+    private fun checkAnswer(userAnswer: Boolean){
+        val answer = questionBank[currentIndex].answer
+
+        val messageResId = if (userAnswer == answer){
+            R.string.correct_toast
+        }else{
+            R.string.incorrect_toast
+        }
+
         Toast.makeText(this,
-            R.string.correct_toast,
-            Toast.LENGTH_SHORT,
-            ).show()
+            messageResId,
+            Toast.LENGTH_SHORT
+        ). show()
         // This part is developed as a challenge part.
-        Snackbar.make(view,
-            R.string.correct_toast,
-            Snackbar.LENGTH_SHORT
-        ).show();
-
-        }
-        falseButton = findViewById(R.id.false_button)
-
-        falseButton.setOnClickListener { view: View ->
-            Toast.makeText(this,
-                R.string.incorrect_toast,
-                Toast.LENGTH_SHORT
-            ). show()
-            // This part is developed as a challenge part.
-            Snackbar.make(view,
-                R.string.incorrect_toast,
-                Snackbar.LENGTH_SHORT
-            ).show();
-        }
-
     }
 }
