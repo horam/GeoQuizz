@@ -33,6 +33,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    // a build process tool generates the boilerplate code
+    // and allow safe interaction with UI elements.
+    buildFeatures{
+        viewBinding = true
+    }
 }
 
 dependencies {
