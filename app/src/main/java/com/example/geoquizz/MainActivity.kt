@@ -1,14 +1,15 @@
 package com.example.geoquizz
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.geoquizz.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.Snackbar
 
+
+private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var currentIndex: Int =0;
@@ -16,33 +17,41 @@ class MainActivity : AppCompatActivity() {
     private val questionBank = listOf(
         Question(R.string.question_australia, true),
         Question(R.string.question_oceans, true),
-    Question(R.string.question_mideast, false),
-    Question(R.string.question_africa, false),
-    Question(R.string.question_americas, true),
-    Question(R.string.question_asia, true)
+        Question(R.string.question_mideast, false),
+        Question(R.string.question_africa, false),
+        Question(R.string.question_americas, true),
+        Question(R.string.question_asia, true)
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        Log.d(TAG, "onCreate(Bundle?) called");
         // Like the R class, View Binding generates code within your package structure,
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // this is a part of the challenge.
         binding.questionTextView.setOnClickListener {
+            enableButtons(false)
             currentIndex = (currentIndex + 1 ) % questionBank.size
             updateQuestion()
+            enableButtons(true)
         }
         binding.trueButton.setOnClickListener { view: View ->
+            enableButtons(false)
             checkAnswer(true)
+            enableButtons(true)
         }
 
         binding.falseButton.setOnClickListener { view: View ->
-             checkAnswer(false)
+            enableButtons(false)
+            checkAnswer(false)
+            enableButtons(true)
         }
 
         binding.nextButton.setOnClickListener {
+            enableButtons(false)
             currentIndex = (currentIndex + 1) % questionBank.size
             updateQuestion()
+            enableButtons(true)
         }
 
         binding.previousButton.setOnClickListener {
@@ -53,6 +62,14 @@ class MainActivity : AppCompatActivity() {
         updateQuestion()
 
 
+
+    }
+
+    private fun enableButtons(enabled: Boolean){
+        binding.previousButton.isEnabled = enabled
+        binding.nextButton.isEnabled = enabled
+        binding.falseButton.isEnabled = enabled
+        binding.trueButton.isEnabled = enabled
 
     }
 
@@ -75,5 +92,31 @@ class MainActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         ). show()
         // This part is developed as a challenge part.
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart() called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume() called")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause() called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop() called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy() called")
     }
 }
