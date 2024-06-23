@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.geoquizz.databinding.ActivityMainBinding
 
@@ -12,6 +11,11 @@ import com.example.geoquizz.databinding.ActivityMainBinding
 private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    // by indicates that property is implemented using a
+    // property delegate. Another famous property delegate
+    // is lazy. It allows developers to save resources by
+    // waiting to initialize property when they are accessed.
+    private val quizViewModel: QuizViewModel by ViewModels()
     private var currentIndex: Int =0;
 
     private val questionBank = listOf(
@@ -24,10 +28,13 @@ class MainActivity : AppCompatActivity() {
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         Log.d(TAG, "onCreate(Bundle?) called");
         // Like the R class, View Binding generates code within your package structure,
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        // QuizViewModel initialize here right before we need it by the viewModels.
+        Log.d(TAG, "got a quizViewModel: $quizViewModel")
         // this is a part of the challenge.
         binding.questionTextView.setOnClickListener {
             enableButtons(false)
