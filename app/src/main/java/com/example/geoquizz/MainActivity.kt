@@ -19,16 +19,6 @@ class MainActivity : AppCompatActivity() {
     // waiting to initialize property when they are accessed.
     private val quizViewModel: QuizViewModel by viewModels ()
 
-    private var currentIndex: Int =0;
-
-    private val questionBank = listOf(
-        Question(R.string.question_australia, true),
-        Question(R.string.question_oceans, true),
-        Question(R.string.question_mideast, false),
-        Question(R.string.question_africa, false),
-        Question(R.string.question_americas, true),
-        Question(R.string.question_asia, true)
-    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         // this is a part of the challenge.
         binding.questionTextView.setOnClickListener {
             enableButtons(false)
-            currentIndex = (currentIndex + 1 ) % questionBank.size
+            quizViewModel.moveToNext()
             updateQuestion()
             enableButtons(true)
         }
@@ -59,13 +49,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.nextButton.setOnClickListener {
             enableButtons(false)
-            currentIndex = (currentIndex + 1) % questionBank.size
+            quizViewModel.moveToNext()
             updateQuestion()
             enableButtons(true)
         }
 
         binding.previousButton.setOnClickListener {
-            currentIndex = (currentIndex - 1) % questionBank.size
+            quizViewModel.moveToPrevious()
             updateQuestion()
         }
 
@@ -84,12 +74,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateQuestion(){
-        val questionTextResId = questionBank[currentIndex].textResId
+        val questionTextResId = quizViewModel.currentQuestionText
         binding.questionTextView.setText(questionTextResId)
     }
 
     private fun checkAnswer(userAnswer: Boolean){
-        val answer = questionBank[currentIndex].answer
+        val answer = quizViewModel.currentQuestionAnswer
 
         val messageResId = if (userAnswer == answer){
             R.string.correct_toast

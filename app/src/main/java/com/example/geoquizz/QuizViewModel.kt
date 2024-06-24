@@ -1,6 +1,7 @@
 package com.example.geoquizz
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
 // The relationship between MainActivity and QuizViewModel is unidirectional. The activity
@@ -23,15 +24,38 @@ import androidx.lifecycle.ViewModel
 // Second, the ViewModel would hold a reference to a stale activity. If the ViewModel tried to
 // update the view of the stale activity, it would trigger an IllegalStateException.
 private const val TAG = "QuizViewModel"
-class QuizViewModel: ViewModel() {
-    init {
-        Log.d(TAG, "View model instance created.")
+
+const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
+
+class QuizViewModel(private val savedStateHandle: SavedStateHandle): ViewModel() {
+    // to save the quiz state when we app goes to background for a long time.
+    private var currentIndex: Int
+        get() = savedStateHandle.get(CURRENT_INDEX_KEY) ?: 0
+        set(value) = savedStateHandle.set(CURRENT_INDEX_KEY, value)
+
+    private val questionBank = listOf(
+        Question(R.string.question_australia, true),
+        Question(R.string.question_oceans, true),
+        Question(R.string.question_mideast, false),
+        Question(R.string.question_africa, false),
+        Question(R.string.question_americas, true),
+        Question(R.string.question_asia, true)
+    )
+
+    // we move the presentation logic into the view to make the activity simple.
+    val currentQuestionAnswer: Boolean get() = questionBank[currentIndex].answer
+
+    val currentQuestionText: Int get() = questionBank[currentIndex].textResId
+
+    fun moveToNext() {
+        currentIndex = (currentIndex + 1) % questionBank.size
     }
-    // This method is used before any clean up.
-    override fun onCleared() {
-        super.onCleared()
-        Log.d(TAG, "View model instance is about to be destroyed")
+
+    fun moveToPrevious() {
+        currentIndex = (currentIndex - 1) % questionBank.size
     }
+
+
 
 }
 //** When you associate a ViewModel instance with an activity’s lifecycle, as you did in Listing 4.3,
@@ -43,3 +67,12 @@ class QuizViewModel: ViewModel() {
 // During the configuration change, the activity instance is destroyed and re-created, but any
 // ViewModels scoped to the activity stay in memory.
 // So QuizViewModel is stays in this scenario but not the activity.
+
+// Each app gets its wn process containing a single thread to execute UI work on a piece of memory.
+// If app is in foreground it has a higher priority in compared to teh app in background.
+// SO background apps will be destroyed after a while by the os. The only way to keep the state
+// is to use saved instance state.
+
+// view model and saved instance state are not solution for long term data storage,
+
+
