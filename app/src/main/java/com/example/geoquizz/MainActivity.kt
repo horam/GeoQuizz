@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelStore
 import com.example.geoquizz.databinding.ActivityMainBinding
 
 
@@ -13,9 +15,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     // by indicates that property is implemented using a
     // property delegate. Another famous property delegate
-    // is lazy. It allows developers to save resources by
+    // is lazy. It allows developers to save resources byx
     // waiting to initialize property when they are accessed.
-    private val quizViewModel: QuizViewModel by ViewModels()
+    private val quizViewModel: QuizViewModel by viewModels ()
+
     private var currentIndex: Int =0;
 
     private val questionBank = listOf(
