@@ -48,6 +48,9 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle): ViewModel()
     val currentQuestionText: Int get() = questionBank[currentIndex].textResId
 
     fun moveToNext() {
+        // This way we can have a complete log cat message with this format. This technique
+        // is verbose and can help others still your ideas, so do not use it until it is necessary.
+        Log.d(TAG, "updating question text", Exception())
         currentIndex = (currentIndex + 1) % questionBank.size
     }
 

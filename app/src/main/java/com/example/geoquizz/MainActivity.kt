@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity() {
         // Like the R class, View Binding generates code within your package structure,
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // QuizViewModel initialize here right before we need it by the viewModels.
+        // The reason that we see Java statement in the cat log is the fact kotlin exceptions
+        // mapped to java.lang exceptions through type-aliasing.
         Log.d(TAG, "got a quizViewModel: $quizViewModel")
         // this is a part of the challenge.
         binding.questionTextView.setOnClickListener {
