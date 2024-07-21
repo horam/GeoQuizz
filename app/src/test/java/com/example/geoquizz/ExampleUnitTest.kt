@@ -9,6 +9,7 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+// example of JVM test which is running on the laptop.
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
