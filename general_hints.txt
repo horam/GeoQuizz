@@ -1,0 +1,27 @@
+Let’s look at what is going on OS-wise as you move between activities.
+First, when you click the app in the launcher, the OS does not start the application;
+it starts an activity in the application. More specifically, it starts the application’s launcher
+activity.Launcher activity status is specified in the manifest
+by the intent- filter element in MainActivity’s declaration.
+
+when user come from parent activity to the child activity, child come above the parent one in the
+activity stack. when user clicks on back, child widget pops and parent remain on the top.
+
+when user is in the launcher activity and Pressing the Back button from the launcher will return
+you to the screen you were looking at before you opened the launcher. This happens because
+your instance of launcher hangs out in the created state (in memory, not visible, and not
+active in the foreground). Android does this so it can quickly and easily restart it where
+user left off when you come back to the app later.
+Keeping the launcher activity in memory allows users to quickly resume using the app in a
+“warm state” after navigating back instead of having to completely restart the application.
+This is a fairly new behavior on Android, introduced with Android 12 (API 31). In previous
+Android versions, your launcher activity would mirror the behavior of other activities and be
+popped off the back stack and removed from memory when the user navigated back.
+
+easily restart MainActivity where you left off when you come back to GeoQuiz later.
+
+What you are seeing here is that the ActivityManager maintains a back stack and that this back
+stack is not just for your application’s activities. Activities for all applications share the
+back stack, which is one reason the ActivityManager is involved in starting your activities and
+lives with the OS and not your application. The stack represents the use of the OS and device as
+ a whole rather than the use of a single application.
