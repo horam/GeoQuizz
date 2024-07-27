@@ -25,3 +25,30 @@ stack is not just for your application’s activities. Activities for all applic
 back stack, which is one reason the ActivityManager is involved in starting your activities and
 lives with the OS and not your application. The stack represents the use of the OS and device as
  a whole rather than the use of a single application.
+
+
+### Minimum SDK version
+The minSdk value is a hard floor below which the OS should refuse to install the app.
+
+### Target SDK version
+The targetSdk value tells Android which API level your app is designed to run on. Most often this
+will be the latest Android release.
+
+
+### Compiled SDK version
+the compile SDK version is private information between you and the compiler.
+Android’s features are exposed through the classes and functions in the SDK. The compile SDK version
+specifies which version to use when building your code. When Android Studio is looking to find the
+classes and functions you refer to in your imports, the compile SDK version determines which SDK
+version it checks against. The best choice for a compile SDK version is the latest API level
+available.
+
+
+You can modify the minimum SDK version, target SDK version, and compile SDK version in your
+app/build.gradle file
+
+Hint: if we add a functionality which is added in API 31 and your compiled sdk version is 32,
+lint adds warning but you still can run the code. One way is to increase the minimum SDK version
+to 31. The alternative is add an annotation  @RequiresApi that means developer is the person
+responsible from making sure it is compatible. so you can check with Build.VERSION.SDK_INT that
+it will work fine.

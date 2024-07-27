@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 			
 			// New approach that uses companion object.
 			val answerIsTrue = quizViewModel.currentQuestionAnswer
-			val intent = CheatActivity.newIntent(this, answerIsTrue)
+			val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
 			cheatLauncher.launch(intent)
 			// Old approach before using companion object
 			// val intent = Intent(this, CheatActivity::class.java)
